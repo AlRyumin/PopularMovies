@@ -32,7 +32,7 @@ public class MainActivity extends BaseAppActivity {
 
         ButterKnife.bind(this);
 
-        initView();
+        initView(savedInstanceState);
     }
 
     @Override
@@ -47,8 +47,12 @@ public class MainActivity extends BaseAppActivity {
         loadData(sortType);
     }
 
-    public void initView() {
+    public void initView(Bundle savedInstanceState) {
         imageAdapter = new ImageAdapter(this);
+        if(savedInstanceState != null) {
+            ArrayList<Movie> items = savedInstanceState.getParcelableArrayList("imageAdapter");
+            imageAdapter.setItems(items); // Load saved data if any.
+        }
         movieList.setAdapter(imageAdapter);
         final Context context = this;
 
@@ -63,6 +67,12 @@ public class MainActivity extends BaseAppActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
     private void beforeLoadData() {
