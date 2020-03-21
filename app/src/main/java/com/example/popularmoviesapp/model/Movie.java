@@ -4,14 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Movie  implements Parcelable {
-    private Long id;
-    private String title;
-    private String original_title;
-    private String poster;
-    private String backdrop;
-    private String synopsis;
-    private String release_date;
-    private Double vote_average;
+    private final Long id;
+    private final String title;
+    private final String original_title;
+    private final String poster;
+    private final String backdrop;
+    private final String synopsis;
+    private final String release_date;
+    private final Double vote_average;
 
     public Movie(Long id, String title, String original_title, String poster, String backdrop, String synopsis, String release_date, Double vote_average) {
         this.id = id;
@@ -33,10 +33,6 @@ public class Movie  implements Parcelable {
         synopsis = parcel.readString();
         release_date = parcel.readString();
         vote_average = parcel.readDouble();
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getTitle() {

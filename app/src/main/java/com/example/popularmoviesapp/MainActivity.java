@@ -40,9 +40,9 @@ public class MainActivity extends BaseAppActivity {
         super.onStart();
         int sortType = MoviePreferences.sortType(this);
         if (sortType == 1) {
-            getSupportActionBar().setTitle(R.string.pref_most_popular_label);
+            getSupportActionBar().setTitle(R.string.most_popular_title);
         } else {
-            getSupportActionBar().setTitle(R.string.pref_top_rated_label);
+            getSupportActionBar().setTitle(R.string.top_rated_title);
         }
         loadData(sortType);
     }
@@ -75,18 +75,9 @@ public class MainActivity extends BaseAppActivity {
         state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
-    private void beforeLoadData() {
-
-    }
-
-    private void afterLoadData() {
-
-    }
-
     private void loadData(int sortType) {
         if (NetworkUtils.isOnline()) {
             hideNetworkError();
-            beforeLoadData();
             MovieThread movieThread = new MovieThread(sortType);
             movieThread.start();
         } else {
@@ -113,7 +104,6 @@ public class MainActivity extends BaseAppActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            afterLoadData();
         }
     }
 
@@ -126,7 +116,6 @@ public class MainActivity extends BaseAppActivity {
 
         public void run() {
             setList(list);
-            afterLoadData();
         }
     }
 }

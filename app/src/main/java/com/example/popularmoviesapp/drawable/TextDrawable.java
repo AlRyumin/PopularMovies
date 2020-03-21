@@ -14,10 +14,9 @@ public class TextDrawable extends Drawable {
     private static final int DEFAULT_TEXTSIZE = 42;
     private static final int DEFAULT_WIDTH = 185;
     private static final int DEFAULT_HEIGHT = 278;
-    private TextPaint mPaint;
-    private String mText;
 
-    StaticLayout myStaticLayout;
+    private final TextPaint mPaint;
+    private final String mText;
 
     public TextDrawable(String text) {
         mText = text;

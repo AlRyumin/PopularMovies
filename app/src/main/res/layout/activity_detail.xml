@@ -24,7 +24,9 @@
             <ImageView
                 android:id="@+id/im_backdrop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty_backdrop"
+                android:contentDescription="@string/backdrop_image"/>
 
             <TextView
                 android:id="@+id/tv_movie_title"

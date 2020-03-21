@@ -43,7 +43,7 @@ public class DetailActivity extends BaseAppActivity {
     }
 
     private void setMovieData() {
-        Movie movie = (Movie) getIntent().getParcelableExtra(
+        Movie movie = getIntent().getParcelableExtra(
                 Movie.class.getCanonicalName());
 
         Picasso.get().load(movie.getBackdrop()).placeholder(R.drawable.empty_backdrop).into(imBackdrop);
@@ -61,8 +61,6 @@ public class DetailActivity extends BaseAppActivity {
     private String getTitle(Movie movie) {
         String title = movie.getTitle();
         String originalTitle = movie.getOriginalTitle();
-        String showTitle = title.equals(originalTitle) ? title : title + " (" + originalTitle + ")";
-
-        return showTitle;
+        return title.equals(originalTitle) ? title : title + " (" + originalTitle + ")";
     }
 }

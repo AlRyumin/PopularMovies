@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 public final class NetworkUtils {
-    private static final String TAG = NetworkUtils.class.getSimpleName();
     private static final String format = "json";
 
     private static final String POPULAR_URL =
@@ -58,18 +57,12 @@ public final class NetworkUtils {
         }
     }
 
-    public static String getMovieList() {
-        return getMovieList(1);
-    }
-
     public static String getMovieList(int type) {
         String movies = null;
         String urlString = type == 1 ? TOP_RATED_URL : POPULAR_URL;
         try {
             URL url = buildUrl(urlString);
             movies = getResponseFromHttpUrl(url);
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,9 +75,7 @@ public final class NetworkUtils {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int exitValue = ipProcess.waitFor();
             return (exitValue == 0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
