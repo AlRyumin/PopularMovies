@@ -1,18 +1,16 @@
 package com.example.popularmoviesapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
+import com.example.popularmoviesapp.data.MoviePreferences;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.utilities.JsonUtils;
+import com.example.popularmoviesapp.utilities.NetworkUtils;
 
 import org.json.JSONException;
 
@@ -21,7 +19,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAppActivity {
     ImageAdapter imageAdapter;
     @BindView(R.id.movie_list)
     GridView movieList;
@@ -35,9 +33,19 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initView();
-        loadData();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int sortType = MoviePreferences.sortType(this);
+        if (sortType == 1) {
+            getSupportActionBar().setTitle(R.string.pref_most_popular_label);
+        } else {
+            getSupportActionBar().setTitle(R.string.pref_top_rated_label);
+        }
+        loadData(sortType);
+    }
 
     public void initView() {
         imageAdapter = new ImageAdapter(this);
@@ -48,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-
                 Movie movie = (Movie) imageAdapter.getItem(position);
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra(Movie.class.getCanonicalName(), movie);
@@ -66,23 +73,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loadData() {
-        beforeLoadData();
-        MyThread myThread = new MyThread();
-        myThread.start();
+    private void loadData(int sortType) {
+        if (NetworkUtils.isOnline()) {
+            hideNetworkError();
+            beforeLoadData();
+            MovieThread movieThread = new MovieThread(sortType);
+            movieThread.start();
+        } else {
+            showNetworkError();
+        }
     }
 
     public void setList(ArrayList<Movie> data) {
         imageAdapter.setData(data);
     }
 
-    public class MyThread extends Thread {
+    public class MovieThread extends Thread {
+        private int sortType;
+
+        public MovieThread(int sortType) {
+            this.sortType = sortType;
+        }
+
         public void run() {
             try {
-                ArrayList<Movie> movieList = JsonUtils.getMovieList();
+                ArrayList<Movie> movieList = JsonUtils.getMovieList(sortType);
                 SetMovieList setMovieList = new SetMovieList(movieList);
                 runOnUiThread(setMovieList);
-                Log.d("movieList", movieList.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

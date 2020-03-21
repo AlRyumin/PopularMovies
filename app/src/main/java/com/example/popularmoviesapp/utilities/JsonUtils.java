@@ -1,7 +1,5 @@
 package com.example.popularmoviesapp.utilities;
 
-import android.util.Log;
-
 import com.example.popularmoviesapp.model.Movie;
 
 import org.json.JSONArray;
@@ -9,19 +7,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public final class JsonUtils {
-    public static ArrayList<Movie> getMovieList() throws JSONException {
+    public static ArrayList<Movie> getMovieList(int type) throws JSONException {
         ArrayList<Movie> items = new ArrayList<>();
         String urlBase = "http://image.tmdb.org/t/p/w185/";
         String urlBasew500 = "http://image.tmdb.org/t/p/w500/";
-        String jsonString = NetworkUtils.getMovieList();
+        String jsonString = NetworkUtils.getMovieList(type);
 
         JSONObject response = new JSONObject(jsonString);
         JSONArray results = response.getJSONArray("results");
 
-        for(int i = 0; i < results.length(); i++){
+        for (int i = 0; i < results.length(); i++) {
             JSONObject result = (JSONObject) results.get(i);
             String poster = urlBase + result.getString("poster_path");
             String backdrop = urlBasew500 + result.getString("backdrop_path");

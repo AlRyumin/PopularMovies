@@ -8,4 +8,27 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MovieTitle">
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_marginBottom">@dimen/content_margin</item>
+    </style>
+
+    <style name="MovieContent">
+        <item name="android:paddingStart">@dimen/content_padding</item>
+        <item name="android:paddingEnd">@dimen/content_padding</item>
+        <item name="android:lineSpacingMultiplier">7</item>
+        <item name="android:letterSpacing">10</item>
+    </style>
+
+    <style name="MovieDescription">
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:layout_marginTop">@dimen/content_margin</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

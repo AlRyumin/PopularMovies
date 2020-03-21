@@ -16,7 +16,7 @@ public class ImageAdapter extends BaseAdapter {
     private ArrayList<Movie> items;
     private Context mContext;
 
-    public ImageAdapter(Context context){
+    public ImageAdapter(Context context) {
         items = new ArrayList<>();
         mContext = context;
     }
@@ -48,11 +48,12 @@ public class ImageAdapter extends BaseAdapter {
                 .placeholder(textDrawable)
                 .into(imageView);
         imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         return imageView;
     }
 
-    public void setData(ArrayList<Movie> items){
+    public void setData(ArrayList<Movie> items) {
         this.items = items;
         notifyDataSetChanged();
     }

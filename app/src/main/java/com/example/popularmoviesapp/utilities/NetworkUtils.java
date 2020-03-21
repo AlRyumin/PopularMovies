@@ -1,11 +1,8 @@
 package com.example.popularmoviesapp.utilities;
 
 import android.net.Uri;
-import android.util.Log;
 
-import com.example.popularmoviesapp.Constant;
-
-import org.json.JSONObject;
+import com.example.popularmoviesapp.data.Constant;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +32,7 @@ public final class NetworkUtils {
 
         try {
             url = new URL(builtUri.toString());
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
 
@@ -61,21 +58,36 @@ public final class NetworkUtils {
         }
     }
 
-    public static String getMovieList(){
+    public static String getMovieList() {
         return getMovieList(1);
     }
 
-    public static String getMovieList(int type){
+    public static String getMovieList(int type) {
         String movies = null;
         String urlString = type == 1 ? TOP_RATED_URL : POPULAR_URL;
-        try{
+        try {
             URL url = buildUrl(urlString);
             movies = getResponseFromHttpUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return movies;
+    }
+
+    public static boolean isOnline() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
