@@ -1,6 +1,8 @@
 package com.example.popularmoviesapp;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,13 +14,25 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter extends BaseAdapter implements Parcelable {
     private ArrayList<Movie> items;
     private Context mContext;
 
     public ImageAdapter(Context context) {
         items = new ArrayList<>();
         mContext = context;
+    }
+
+    private ImageAdapter(Parcel parcel) {
+        items = parcel.readArrayList(ImageAdapter.class.getClassLoader());
+    }
+
+    public void setItems(ArrayList<Movie> items) {
+        this.items = items;
+    }
+
+    public ArrayList<Movie> getItems() {
+        return items;
     }
 
     @Override
@@ -57,4 +71,24 @@ public class ImageAdapter extends BaseAdapter {
         this.items = items;
         notifyDataSetChanged();
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeList(items);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public ImageAdapter createFromParcel(Parcel parcel) {
+            return new ImageAdapter(parcel);
+        }
+
+        public ImageAdapter[] newArray(int size) {
+            return new ImageAdapter[size];
+        }
+    };
 }
