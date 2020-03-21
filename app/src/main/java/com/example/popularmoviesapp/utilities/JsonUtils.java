@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public final class JsonUtils {
     public static ArrayList<Movie> getMovieList(int type) throws JSONException {
         ArrayList<Movie> items = new ArrayList<>();
-        String urlBase = "http://image.tmdb.org/t/p/w185/";
-        String urlBasew500 = "http://image.tmdb.org/t/p/w500/";
+        String urlBase = "https://image.tmdb.org/t/p/w185/";
+        String urlBasew500 = "https://image.tmdb.org/t/p/w500/";
         String jsonString = NetworkUtils.getMovieList(type);
 
         JSONObject response = new JSONObject(jsonString);

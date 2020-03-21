@@ -1,34 +1,29 @@
-package com.example.popularmoviesapp.draweble;
+package com.example.popularmoviesapp.drawable;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 
 public class TextDrawable extends Drawable {
-    private static final int DEFAULT_COLOR = Color.WHITE;
-    private static final int DEFAULT_TEXTSIZE = 15;
+    private static final int DEFAULT_COLOR = Color.BLACK;
+    private static final int DEFAULT_TEXTSIZE = 42;
+    private static final int DEFAULT_WIDTH = 185;
+    private static final int DEFAULT_HEIGHT = 278;
     private TextPaint mPaint;
     private String mText;
-    private int width;
-    private int height;
-    private int textSize;
 
     StaticLayout myStaticLayout;
 
     public TextDrawable(String text) {
         mText = text;
-        textSize = 12;
         mPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setTextSize(textSize);
-        width = 185;
-        height = 278;
+        mPaint.setColor(DEFAULT_COLOR);
+        mPaint.setTextSize(DEFAULT_TEXTSIZE);
     }
     @Override
     public void draw(Canvas canvas) {
@@ -45,11 +40,11 @@ public class TextDrawable extends Drawable {
     }
     @Override
     public int getIntrinsicWidth() {
-        return width;
+        return DEFAULT_WIDTH;
     }
     @Override
     public int getIntrinsicHeight() {
-        return height;
+        return DEFAULT_HEIGHT;
     }
     @Override
     public void setAlpha(int alpha) {

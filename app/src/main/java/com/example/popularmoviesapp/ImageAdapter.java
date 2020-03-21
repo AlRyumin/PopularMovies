@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.example.popularmoviesapp.draweble.TextDrawable;
+import com.example.popularmoviesapp.drawable.TextDrawable;
 import com.example.popularmoviesapp.model.Movie;
 import com.squareup.picasso.Picasso;
 
