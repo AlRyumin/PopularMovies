@@ -17,9 +17,9 @@ public class MoviePreferences {
         String sort = context.getString(R.string.pref_most_popular);
         int type;
         if (sort.equals(preferredUnits)) {
-            type = 1;
+            type = Constant.SORT_TYPE_POPULAR;
         } else {
-            type = 2;
+            type = Constant.SORT_TYPE_TOP_RATED;
         }
         return type;
     }

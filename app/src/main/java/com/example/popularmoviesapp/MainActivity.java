@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.data.MoviePreferences;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.utilities.JsonUtils;
@@ -39,7 +40,7 @@ public class MainActivity extends BaseAppActivity {
     protected void onStart() {
         super.onStart();
         int sortType = MoviePreferences.sortType(this);
-        if (sortType == 1) {
+        if (sortType == Constant.SORT_TYPE_POPULAR) {
             getSupportActionBar().setTitle(R.string.most_popular_title);
         } else {
             getSupportActionBar().setTitle(R.string.top_rated_title);

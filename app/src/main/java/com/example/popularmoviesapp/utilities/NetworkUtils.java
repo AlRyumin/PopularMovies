@@ -59,7 +59,7 @@ public final class NetworkUtils {
 
     public static String getMovieList(int type) {
         String movies = null;
-        String urlString = type == 1 ? TOP_RATED_URL : POPULAR_URL;
+        String urlString = type == Constant.SORT_TYPE_POPULAR ? POPULAR_URL: TOP_RATED_URL;
         try {
             URL url = buildUrl(urlString);
             movies = getResponseFromHttpUrl(url);
