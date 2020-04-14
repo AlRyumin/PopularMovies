@@ -1,5 +1,7 @@
 package com.example.popularmoviesapp.utilities;
 
+import android.util.Log;
+
 import com.example.popularmoviesapp.data.Constant;
 
 import okhttp3.OkHttpClient;
@@ -19,7 +21,7 @@ public final class NetworkUtils {
 
     public static String getMovieList(int type) {
         String movies = null;
-        String url = type == Constant.SORT_TYPE_POPULAR ? POPULAR_URL: TOP_RATED_URL;
+        String url = type == Constant.SORT_TYPE_POPULAR ? POPULAR_URL : TOP_RATED_URL;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -27,11 +29,28 @@ public final class NetworkUtils {
 
         try (Response response = client.newCall(request).execute()) {
             movies = response.body().string();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return movies;
+    }
+
+    public static String getTrailers(Long id) {
+        String trailers = null;
+        String url = "http://api.themoviedb.org/3/movie/" + id + "/videos?api_key=" + Constant.API_KEY;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            Log.d("getTrailers", "response");
+            trailers = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return trailers;
     }
 
     public static boolean isOnline() {

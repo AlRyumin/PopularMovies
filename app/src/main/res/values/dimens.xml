@@ -5,4 +5,7 @@
     <dimen name="content_padding">5dp</dimen>
     <dimen name="content_margin">5dp</dimen>
     <dimen name="movie_title_text_size">22sp</dimen>
+    <dimen name="title_text_size">18sp</dimen>
+    <dimen name="item_horizontal_padding">8dp</dimen>
+    <dimen name="play_button_size">60dp</dimen>
 </resources>

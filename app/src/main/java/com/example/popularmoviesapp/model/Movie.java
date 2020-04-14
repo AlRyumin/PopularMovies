@@ -3,7 +3,7 @@ package com.example.popularmoviesapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Movie  implements Parcelable {
+public class Movie implements Parcelable {
     private final Long id;
     private final String title;
     private final String original_title;
@@ -34,6 +34,8 @@ public class Movie  implements Parcelable {
         release_date = parcel.readString();
         vote_average = parcel.readDouble();
     }
+
+    public Long getId() { return id; }
 
     public String getTitle() {
         return title;

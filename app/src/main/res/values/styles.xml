@@ -14,7 +14,7 @@
     </style>
 
     <style name="MovieTitle" parent="MovieItem">
-        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textSize">@dimen/movie_title_text_size</item>
         <item name="android:layout_marginBottom">@dimen/content_margin</item>
     </style>
@@ -28,6 +28,11 @@
     <style name="MovieDescription" parent="MovieItem">
         <item name="android:lineSpacingMultiplier">1.2</item>
         <item name="android:layout_marginTop">@dimen/content_margin</item>
+    </style>
+
+    <style name="TrailersLabel" parent="MovieItem">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">@dimen/title_text_size</item>
     </style>
 
     <style name="Title">
