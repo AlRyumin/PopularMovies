@@ -44,13 +44,28 @@ public final class NetworkUtils {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            Log.d("getTrailers", "response");
             trailers = response.body().string();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return trailers;
+    }
+
+    public static String getReviews(Long id) {
+        String reviews = null;
+        String url = "http://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=" + Constant.API_KEY;
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+Log.d("urlasdf", url);
+        try (Response response = client.newCall(request).execute()) {
+            reviews = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return reviews;
     }
 
     public static boolean isOnline() {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/close_button"
+        style="@style/IconButtonClose"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/ic_close" />
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ReviewAuthor"
+        android:layout_below="@+id/close_button"
+        tools:text="Alex Ryumin"/>
+
+    <View
+        android:id="@+id/divider"
+        style="@style/Divider"
+        android:layout_below="@+id/author"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider">
+        <TextView
+            android:id="@+id/content"
+            style="@style/DetailReviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+</RelativeLayout>

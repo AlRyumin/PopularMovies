@@ -12,7 +12,7 @@
         android:text="@string/network_error"
         android:visibility="gone" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -81,19 +81,30 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                style="@style/TrailersLabel"
+                style="@style/CustomLabel"
                 android:text="@string/view_trailer_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/trailers_list"
+                android:id="@+id/trailer_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:paddingStart="@dimen/item_horizontal_padding"
                 android:paddingEnd="@dimen/item_horizontal_padding"/>
+
+            <TextView
+                style="@style/CustomLabel"
+                android:text="@string/reviews_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/review_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"/>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -30,8 +30,8 @@
         <item name="android:layout_marginTop">@dimen/content_margin</item>
     </style>
 
-    <style name="TrailersLabel" parent="MovieItem">
-        <item name="android:textColor">@color/colorAccent</item>
+    <style name="CustomLabel" parent="MovieItem">
+        <item name="android:textColor">@color/colorPrimaryText</item>
         <item name="android:textSize">@dimen/title_text_size</item>
     </style>
 
@@ -39,4 +39,36 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ReviewAuthor">
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">@dimen/content_padding</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ReviewContent">
+        <item name="android:paddingStart">@dimen/content_padding</item>
+        <item name="android:paddingEnd">@dimen/content_padding</item>
+        <item name="android:paddingBottom">@dimen/content_padding</item>
+    </style>
+
+    <style name="DetailReviewContent" parent="ReviewContent">
+        <item name="android:paddingTop">@dimen/content_padding</item>
+    </style>
+
+    <style name="ButtonFullReview" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="IconButtonClose" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">@dimen/square_icon_button_size</item>
+        <item name="android:layout_height">@dimen/square_icon_button_size</item>
+        <item name="android:layout_marginTop">@dimen/content_padding</item>
+        <item name="android:layout_marginEnd">@dimen/content_padding</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.popularmoviesapp.model.Movie;
+import com.example.popularmoviesapp.model.Review;
 import com.example.popularmoviesapp.model.Trailer;
 
 import org.json.JSONArray;
@@ -13,6 +14,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public final class JsonUtils {
+    private static int movieType;
+
     public static ArrayList<Movie> getMovieList(int type) throws JSONException {
         ArrayList<Movie> items = new ArrayList<>();
         String urlBase = "https://image.tmdb.org/t/p/w185/";
@@ -40,6 +43,10 @@ public final class JsonUtils {
         return items;
     }
 
+    private static void setMovieData(){
+
+    }
+
     public static ArrayList<Trailer> getTrailer(Long id) throws JSONException {
         ArrayList<Trailer> items = new ArrayList<>();
         String jsonString = NetworkUtils.getTrailers(id);
@@ -57,7 +64,28 @@ public final class JsonUtils {
             String type = result.getString("type");
             Trailer trailer = new Trailer(trailerId, key, name, site, size, type);
             items.add(trailer);
-            Log.d("RESULTTT", result.toString());
+        }
+
+        return items;
+    }
+
+    public static ArrayList<Review> getReviews(Long id) throws JSONException {
+        ArrayList<Review> items = new ArrayList<>();
+        String jsonString = NetworkUtils.getReviews(id);
+
+        JSONObject response = new JSONObject(jsonString);
+        JSONArray results = response.getJSONArray("results");
+
+        for (int i = 0; i < results.length(); i++) {
+            JSONObject result = (JSONObject) results.get(i);
+
+            String reviewId = result.getString("id");
+            String author = result.getString("author");
+            String content = result.getString("content");
+            String url = result.getString("url");
+
+            Review review = new Review(reviewId, author, content, url);
+            items.add(review);
         }
 
         return items;
