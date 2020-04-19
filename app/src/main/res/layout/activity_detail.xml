@@ -26,52 +26,69 @@
                 android:id="@+id/im_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/empty_backdrop"
-                android:contentDescription="@string/backdrop_image"/>
+                android:contentDescription="@string/backdrop_image"
+                android:src="@drawable/empty_backdrop" />
 
-            <TextView
-                android:id="@+id/tv_movie_title"
-                style="@style/MovieTitle"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="Great Title" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_movie_title"
+                    style="@style/MovieTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/square_icon_button_sibling"
+                    tools:text="Great Title" />
+
+                <ImageButton
+                    android:id="@+id/im_favorite"
+                    style="@style/IconButtonClose"
+                    android:layout_width="@dimen/square_icon_button_size"
+                    android:layout_height="@dimen/square_icon_button_size"
+                    android:layout_alignParentEnd="true"
+                    android:contentDescription="@string/backdrop_image"
+                    android:src="@drawable/ic_favorite_border" />
+            </RelativeLayout>
 
             <LinearLayout
+                style="@style/MovieItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                style="@style/MovieItem">
+                android:orientation="horizontal">
+
                 <TextView
+                    style="@style/Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/user_rating"
                     android:layout_weight="1"
-                    style="@style/Title"/>
+                    android:text="@string/user_rating" />
 
                 <TextView
                     android:id="@+id/tv_vote_average"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
+                style="@style/MovieItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                style="@style/MovieItem">
+                android:orientation="horizontal">
+
                 <TextView
+                    style="@style/Title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/release_date"
                     android:layout_weight="1"
-                    style="@style/Title"/>
+                    android:text="@string/release_date" />
 
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <TextView
@@ -81,10 +98,11 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:id="@+id/trailers_logo"
                 style="@style/CustomLabel"
-                android:text="@string/view_trailer_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/view_trailer_label" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/trailer_list"
@@ -92,19 +110,20 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:paddingStart="@dimen/item_horizontal_padding"
-                android:paddingEnd="@dimen/item_horizontal_padding"/>
+                android:paddingEnd="@dimen/item_horizontal_padding" />
 
             <TextView
+                android:id="@+id/reviews_logo"
                 style="@style/CustomLabel"
-                android:text="@string/reviews_label"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/reviews_label" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/review_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"/>
+                android:clipToPadding="false" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
