@@ -31,12 +31,12 @@ public final class JsonUtils {
             String backdrop = urlBasew500 + result.getString("backdrop_path");
             Long id = result.getLong("id");
             String title = result.getString("title");
-            String original_title = result.getString("original_title");
+            String originalTitle = result.getString("original_title");
             String synopsis = result.getString("overview");
-            String release_date = result.getString("release_date");
-            Double vote_average = result.getDouble("vote_average");
+            String releaseDate = result.getString("release_date");
+            Double voteAverage = result.getDouble("vote_average");
 
-            Movie movie = new Movie(id, title, original_title, poster, backdrop, synopsis, release_date, vote_average);
+            Movie movie = new Movie(id, title, originalTitle, poster, backdrop, synopsis, releaseDate, voteAverage);
             items.add(movie);
         }
 
@@ -62,7 +62,7 @@ public final class JsonUtils {
             String site = result.getString("site");
             Integer size = result.getInt("size");
             String type = result.getString("type");
-            Trailer trailer = new Trailer(trailerId, key, name, site, size, type);
+            Trailer trailer = new Trailer(trailerId, key, name, site, size, type, id);
             items.add(trailer);
         }
 

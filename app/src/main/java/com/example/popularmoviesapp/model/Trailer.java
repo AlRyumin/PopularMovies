@@ -1,25 +1,32 @@
 package com.example.popularmoviesapp.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Trailer {
+    @PrimaryKey
     private String id;
     private String key;
     private String name;
     private String site;
-    private String image_url;
-    private String video_url;
+    private String imageUrl;
+    private String videoUrl;
     private Integer size;
     private String type;
+    private long movieId;
 
-    public Trailer(String id, String key, String name, String site, Integer size, String type) {
+    public Trailer(String id, String key, String name, String site, Integer size, String type, Long movieId) {
         this.id = id;
         this.key = key;
         this.name = name;
         this.site = site;
         this.size = size;
         this.type = type;
+        this.movieId = movieId;
 
-        this.image_url = "https://img.youtube.com/vi/" + key + "/0.jpg";
-        this.video_url = "https://www.youtube.com/watch?v=" + key;
+        this.imageUrl = "https://img.youtube.com/vi/" + key + "/0.jpg";
+        this.videoUrl = "https://www.youtube.com/watch?v=" + key;
     }
 
     public String getId() {
@@ -39,11 +46,11 @@ public class Trailer {
     }
 
     public String getImageUrl() {
-        return image_url;
+        return imageUrl;
     }
 
     public String getVideoUrl() {
-        return video_url;
+        return videoUrl;
     }
 
     public Integer getSize() {
@@ -53,4 +60,6 @@ public class Trailer {
     public String getType() {
         return type;
     }
+
+    public long getMovieId() { return movieId; }
 }

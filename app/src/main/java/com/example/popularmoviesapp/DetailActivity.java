@@ -146,7 +146,7 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
 
         tvMovieTitle.setText(getTitle(movie));
         tvSynopsis.setText(movie.getSynopsis());
-        tvVoteAverage.setText(String.valueOf(movie.getVote_average()));
+        tvVoteAverage.setText(String.valueOf(movie.getVoteAverage()));
         tvDate.setText(movie.getReleaseDate());
 
         getSupportActionBar().setTitle(movie.getTitle());

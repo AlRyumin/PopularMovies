@@ -3,36 +3,41 @@ package com.example.popularmoviesapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Movie implements Parcelable {
+    @PrimaryKey
     private final Long id;
     private final String title;
-    private final String original_title;
+    private final String originalTitle;
     private final String poster;
     private final String backdrop;
     private final String synopsis;
-    private final String release_date;
-    private final Double vote_average;
+    private final String releaseDate;
+    private final Double voteAverage;
 
-    public Movie(Long id, String title, String original_title, String poster, String backdrop, String synopsis, String release_date, Double vote_average) {
+    public Movie(Long id, String title, String originalTitle, String poster, String backdrop, String synopsis, String releaseDate, Double voteAverage) {
         this.id = id;
         this.title = title;
-        this.original_title = original_title;
+        this.originalTitle = originalTitle;
         this.poster = poster;
         this.backdrop = backdrop;
         this.synopsis = synopsis;
-        this.release_date = release_date;
-        this.vote_average = vote_average;
+        this.releaseDate = releaseDate;
+        this.voteAverage = voteAverage;
     }
 
     private Movie(Parcel parcel) {
         id = parcel.readLong();
         title = parcel.readString();
-        original_title = parcel.readString();
+        originalTitle = parcel.readString();
         poster = parcel.readString();
         backdrop = parcel.readString();
         synopsis = parcel.readString();
-        release_date = parcel.readString();
-        vote_average = parcel.readDouble();
+        releaseDate = parcel.readString();
+        voteAverage = parcel.readDouble();
     }
 
     public Long getId() { return id; }
@@ -42,7 +47,7 @@ public class Movie implements Parcelable {
     }
 
     public String getOriginalTitle() {
-        return original_title;
+        return originalTitle;
     }
 
     public String getPoster() {
@@ -58,11 +63,11 @@ public class Movie implements Parcelable {
     }
 
     public String getReleaseDate() {
-        return release_date;
+        return releaseDate;
     }
 
-    public Double getVote_average() {
-        return vote_average;
+    public Double getVoteAverage() {
+        return voteAverage;
     }
 
     @Override
@@ -74,12 +79,12 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeLong(id);
         parcel.writeString(title);
-        parcel.writeString(original_title);
+        parcel.writeString(originalTitle);
         parcel.writeString(poster);
         parcel.writeString(backdrop);
         parcel.writeString(synopsis);
-        parcel.writeString(release_date);
-        parcel.writeDouble(vote_average);
+        parcel.writeString(releaseDate);
+        parcel.writeDouble(voteAverage);
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
