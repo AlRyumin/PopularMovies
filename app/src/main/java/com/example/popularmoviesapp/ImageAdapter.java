@@ -13,9 +13,10 @@ import com.example.popularmoviesapp.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ImageAdapter extends BaseAdapter implements Parcelable {
-    private ArrayList<Movie> items;
+    private List<Movie> items;
     private Context mContext;
 
     public ImageAdapter(Context context) {
@@ -32,7 +33,7 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
     }
 
     public ArrayList<Movie> getItems() {
-        return items;
+        return (ArrayList<Movie>) items;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
         return imageView;
     }
 
-    public void setData(ArrayList<Movie> items) {
+    public void setData(List<Movie> items) {
         this.items = items;
         notifyDataSetChanged();
     }

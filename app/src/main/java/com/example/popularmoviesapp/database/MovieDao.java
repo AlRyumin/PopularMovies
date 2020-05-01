@@ -1,6 +1,7 @@
 package com.example.popularmoviesapp.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -10,12 +11,13 @@ import androidx.room.Update;
 
 import com.example.popularmoviesapp.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Dao
 public interface MovieDao {
-    @Query("SELECT * FROM movie WHERE 1")
-    LiveData<List<Movie>> get();
+    @Query("SELECT * FROM movie")
+    List<Movie> get();
 
     @Insert
     void insertMovie(Movie movie);
@@ -27,5 +29,5 @@ public interface MovieDao {
     void delete(Movie movie);
 
     @Query("SELECT * FROM movie where id = :id")
-    LiveData<Movie> get(long id);
+    Movie get(long id);
 }

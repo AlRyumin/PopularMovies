@@ -3,19 +3,19 @@ package com.example.popularmoviesapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.data.MoviePreferences;
 import com.example.popularmoviesapp.model.Movie;
-import com.example.popularmoviesapp.utilities.JsonUtils;
-import com.example.popularmoviesapp.utilities.NetworkUtils;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +24,8 @@ public class MainActivity extends BaseAppActivity {
     ImageAdapter imageAdapter;
     @BindView(R.id.movie_list)
     GridView movieList;
-
+    int sortType;
+    MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,19 +34,37 @@ public class MainActivity extends BaseAppActivity {
 
         ButterKnife.bind(this);
 
+        sortType = MoviePreferences.sortType(this);
+
         initView(savedInstanceState);
+
+        viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
+        viewModel.setSortType(sortType);
+
+        viewModel.getMovies().observe(this, movies -> {
+            setList(movies);
+        });
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         int sortType = MoviePreferences.sortType(this);
+        Log.d("SORTTYP", Integer.toString(sortType));
+        Log.d("SORTTYPTH", Integer.toString(this.sortType));
+        if(this.sortType != sortType){
+            this.sortType = sortType;
+            viewModel.setSortType(sortType);
+        }
+
         if (sortType == Constant.SORT_TYPE_POPULAR) {
             getSupportActionBar().setTitle(R.string.most_popular_title);
-        } else {
+        } else if(sortType == Constant.SORT_TYPE_TOP_RATED){
             getSupportActionBar().setTitle(R.string.top_rated_title);
+        } else {
+            getSupportActionBar().setTitle(R.string.favorite_title);
         }
-        loadData(sortType);
     }
 
     public void initView(Bundle savedInstanceState) {
@@ -76,47 +95,9 @@ public class MainActivity extends BaseAppActivity {
         state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
-    private void loadData(int sortType) {
-        if (NetworkUtils.isOnline()) {
-            hideNetworkError();
-            MovieThread movieThread = new MovieThread(sortType);
-            movieThread.start();
-        } else {
-            showNetworkError();
-        }
-    }
-
-    public void setList(ArrayList<Movie> data) {
-        imageAdapter.setData(data);
-    }
-
-    public class MovieThread extends Thread {
-        private int sortType;
-
-        public MovieThread(int sortType) {
-            this.sortType = sortType;
-        }
-
-        public void run() {
-            try {
-                ArrayList<Movie> movieList = JsonUtils.getMovieList(sortType);
-                SetMovieList setMovieList = new SetMovieList(movieList);
-                runOnUiThread(setMovieList);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public class SetMovieList extends Thread {
-        ArrayList<Movie> list;
-
-        public SetMovieList(ArrayList<Movie> list) {
-            this.list = list;
-        }
-
-        public void run() {
-            setList(list);
+    public void setList(List<Movie> data) {
+        if(data != null){
+            imageAdapter.setData(data);
         }
     }
 }

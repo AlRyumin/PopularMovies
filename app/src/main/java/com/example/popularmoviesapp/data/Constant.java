@@ -5,4 +5,5 @@ public final class Constant {
 
     public static final int SORT_TYPE_POPULAR = 1;
     public static final int SORT_TYPE_TOP_RATED = 2;
+    public static final int SORT_TYPE_FAVORITE_MOVIES = 3;
 }

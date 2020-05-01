@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.popularmoviesapp.adapter.ReviewAdapter;
 import com.example.popularmoviesapp.adapter.TrailerAdapter;
+import com.example.popularmoviesapp.database.AppDatabase;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.model.Review;
 import com.example.popularmoviesapp.model.Trailer;
@@ -74,6 +75,27 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
         setData();
         setTrailersData();
         setReviewsData();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkIfMoviewFavorite();
+    }
+
+    private void checkIfMoviewFavorite(){
+        AppDatabase database = AppDatabase.getInstance(this);
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                Movie favoriteMovie = database.movieDao().get(movie.getId());
+                if(favoriteMovie != null){
+                    runOnUiThread(() -> imFavorite.setImageResource(R.drawable.ic_favorite));
+                    isFavorite = true;
+                }
+            }
+        };
+        thread.start();
     }
 
     private void setTrailersData() {
@@ -160,19 +182,46 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
 
     @OnClick(R.id.im_favorite)
     public void submit(View view) {
-        int imageId = isFavorite ? R.drawable.ic_favorite_border : R.drawable.ic_favorite ;
-        String toastText = isFavorite ? getString(R.string.removed_from_favorite)
-                : getString(R.string.added_to_favorite);
+        isFavorite = !isFavorite;
+
+        int imageId = isFavorite ? R.drawable.ic_favorite : R.drawable.ic_favorite_border;
+        String toastText = isFavorite ? getString(R.string.added_to_favorite)
+                : getString(R.string.removed_from_favorite);
 
         imFavorite.setImageResource(imageId);
 
+        updateDatabase(isFavorite);
+
         Toast toast = Toast.makeText(getApplicationContext(), toastText, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP|Gravity.CENTER, 0, 0);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER, 0, 0);
         toast.show();
+    }
 
-        isFavorite = !isFavorite;
+    private void updateDatabase(boolean isFavorite) {
+        AppDatabase database = AppDatabase.getInstance(this);
 
-        Log.d("FAVCLICK", movie.getTitle());
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                if (isFavorite) {
+                    saveMovieToFavorite(database);
+                } else {
+                    removeMovieFromFavorite(database);
+                }
+            }
+        };
+
+        thread.start();
+    }
+
+    private void saveMovieToFavorite(AppDatabase database) {
+        Log.d("INSERtsaf", "ins");
+        Log.d("INSERMOV", movie.getTitle());
+        database.movieDao().insertMovie(movie);
+    }
+
+    private void removeMovieFromFavorite(AppDatabase database) {
+        database.movieDao().delete(movie);
     }
 
     @Override

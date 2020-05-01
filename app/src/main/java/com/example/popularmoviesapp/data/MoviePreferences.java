@@ -18,9 +18,12 @@ public class MoviePreferences {
         int type;
         if (sort.equals(preferredUnits)) {
             type = Constant.SORT_TYPE_POPULAR;
-        } else {
+        } else if(preferredUnits.equals(context.getString(R.string.pref_top_rated))){
             type = Constant.SORT_TYPE_TOP_RATED;
+        } else {
+            type = Constant.SORT_TYPE_FAVORITE_MOVIES;
         }
+
         return type;
     }
 }
