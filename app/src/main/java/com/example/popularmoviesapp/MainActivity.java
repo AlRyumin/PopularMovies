@@ -2,19 +2,22 @@ package com.example.popularmoviesapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.data.MoviePreferences;
 import com.example.popularmoviesapp.model.Movie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,7 +29,9 @@ public class MainActivity extends BaseAppActivity {
     GridView movieList;
     int sortType;
     MainViewModel viewModel;
+    boolean isLoading = false;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +44,11 @@ public class MainActivity extends BaseAppActivity {
         initView(savedInstanceState);
 
         viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
-        viewModel.setSortType(sortType);
+        viewModel.setOptions(sortType);
 
         viewModel.getMovies().observe(this, movies -> {
             setList(movies);
+            isLoading = false;
         });
 
     }
@@ -51,16 +57,15 @@ public class MainActivity extends BaseAppActivity {
     protected void onStart() {
         super.onStart();
         int sortType = MoviePreferences.sortType(this);
-        Log.d("SORTTYP", Integer.toString(sortType));
-        Log.d("SORTTYPTH", Integer.toString(this.sortType));
-        if(this.sortType != sortType){
+        if (this.sortType != sortType) {
             this.sortType = sortType;
-            viewModel.setSortType(sortType);
+            viewModel.setOptions(sortType);
+            isLoading = true;
         }
 
         if (sortType == Constant.SORT_TYPE_POPULAR) {
             getSupportActionBar().setTitle(R.string.most_popular_title);
-        } else if(sortType == Constant.SORT_TYPE_TOP_RATED){
+        } else if (sortType == Constant.SORT_TYPE_TOP_RATED) {
             getSupportActionBar().setTitle(R.string.top_rated_title);
         } else {
             getSupportActionBar().setTitle(R.string.favorite_title);
@@ -69,10 +74,6 @@ public class MainActivity extends BaseAppActivity {
 
     public void initView(Bundle savedInstanceState) {
         imageAdapter = new ImageAdapter(this);
-        if(savedInstanceState != null) {
-            ArrayList<Movie> items = savedInstanceState.getParcelableArrayList("imageAdapter");
-            imageAdapter.setItems(items); // Load saved data if any.
-        }
         movieList.setAdapter(imageAdapter);
         final Context context = this;
 
@@ -87,6 +88,22 @@ public class MainActivity extends BaseAppActivity {
                 startActivity(intent);
             }
         });
+
+        movieList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (firstVisibleItem + visibleItemCount >= totalItemCount && viewModel != null &&
+                        !isLoading) {
+                    viewModel.loadMore();
+                    isLoading = true;
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+        });
     }
 
     @Override
@@ -95,8 +112,9 @@ public class MainActivity extends BaseAppActivity {
         state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setList(List<Movie> data) {
-        if(data != null){
+        if (data != null) {
             imageAdapter.setData(data);
         }
     }

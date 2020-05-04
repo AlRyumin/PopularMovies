@@ -128,7 +128,6 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
     }
 
     private void setDetailData() {
-        Log.d("downloadData", "asdfasf");
         Thread thread = new Thread() {
             @Override
             public void run() {
@@ -215,8 +214,6 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
     }
 
     private void saveMovieToFavorite(AppDatabase database) {
-        Log.d("INSERtsaf", "ins");
-        Log.d("INSERMOV", movie.getTitle());
         database.movieDao().insertMovie(movie);
     }
 
@@ -227,7 +224,6 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
     @Override
     public void onListItemClick(int itemIndex) {
         Trailer trailer = trailerList.get(itemIndex);
-        Log.d("oncliasdfas", trailer.getVideoUrl());
 
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer.getVideoUrl())));
     }

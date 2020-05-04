@@ -1,8 +1,10 @@
 package com.example.popularmoviesapp;
 
 import android.app.Application;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -18,45 +20,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
-    MutableLiveData<ArrayList<Movie>> movies;
+    MutableLiveData<List<Movie>> movies;
     int sortType;
+    int page;
+    boolean isLastPage;
 
     public MainViewModel(Application application) {
         super(application);
         movies = new MutableLiveData<>();
+        page = 1;
+        isLastPage = false;
     }
 
     private void loadMovies() {
-        if(sortType == Constant.SORT_TYPE_FAVORITE_MOVIES){
+        if (sortType == Constant.SORT_TYPE_FAVORITE_MOVIES) {
             loadMoviesFromDataBase();
         } else {
             loadMoviesFromApi();
         }
     }
 
-    private void loadMoviesFromDataBase(){
+    private void loadMoviesFromDataBase() {
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
-        Thread thread = new Thread(){
+        Thread thread = new Thread() {
             @Override
             public void run() {
                 List<Movie> dBMovies = database.movieDao().get();
-                if(dBMovies.isEmpty()){
+                if (dBMovies.isEmpty()) {
                     movies.postValue(new ArrayList<>());
                 } else {
                     movies.postValue((ArrayList<Movie>) dBMovies);
                 }
+                isLastPage = true;
             }
         };
         thread.start();
     }
 
-    private void loadMoviesFromApi(){
+    private void loadMoviesFromApi() {
         Thread thread = new Thread() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void run() {
                 try {
-                    ArrayList<Movie> movieList = JsonUtils.getMovieList(sortType);
-                    movies.postValue(movieList);
+                    List<Movie> movieList = JsonUtils.getMovieList(sortType, page);
+                    if (movieList.isEmpty()) {
+                        isLastPage = true;
+                    } else if (movies.getValue() != null) {
+                        List<Movie> newMoviewList = movies.getValue();
+                        newMoviewList.addAll(movieList);
+                        movies.postValue(newMoviewList);
+                        page++;
+                    } else {
+                        movies.postValue(movieList);
+                        page++;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -65,15 +83,20 @@ public class MainViewModel extends AndroidViewModel {
         thread.start();
     }
 
-    public LiveData<ArrayList<Movie>> getMovies() {
-        if (movies.getValue() == null) {
-            loadMovies();
-        }
+    public LiveData<List<Movie>> getMovies() {
         return movies;
     }
 
-    public void setSortType(int sortType) {
+    public void setOptions(int sortType) {
         this.sortType = sortType;
-        loadMovies();
+        page = 1;
+        isLastPage = false;
+        movies.postValue(new ArrayList<>());
+    }
+
+    public void loadMore() {
+        if (!isLastPage) {
+            loadMovies();
+        }
     }
 }

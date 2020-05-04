@@ -26,7 +26,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
-        Log.d("setReviewList", reviewList.toString());
         notifyDataSetChanged();
     }
 

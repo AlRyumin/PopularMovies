@@ -30,4 +30,6 @@
     <string name="view_trailer_label" translatable="false">Trailers</string>
     <string name="reviews_label" translatable="false">Reviews</string>
     <string name="read_full_review" translatable="false">Read More</string>
+
+    <string name="all_movies_loaded" translatable="false">All movies are loaded</string>
 </resources>

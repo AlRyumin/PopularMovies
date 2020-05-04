@@ -11,17 +11,18 @@ import okhttp3.Response;
 public final class NetworkUtils {
     private static final String format = "json";
 
-    private static final String POPULAR_URL =
+    private static String POPULAR_URL =
             "http://api.themoviedb.org/3/movie/popular?api_key=" + Constant.API_KEY;
 
-    private static final String TOP_RATED_URL =
+    private static String TOP_RATED_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=" + Constant.API_KEY;
 
     private static OkHttpClient client = new OkHttpClient();
 
-    public static String getMovieList(int type) {
+    public static String getMovieList(int type, int page) {
         String movies = null;
         String url = type == Constant.SORT_TYPE_POPULAR ? POPULAR_URL : TOP_RATED_URL;
+        url += "&page=" + page;
 
         Request request = new Request.Builder()
                 .url(url)
@@ -58,7 +59,6 @@ public final class NetworkUtils {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-Log.d("urlasdf", url);
         try (Response response = client.newCall(request).execute()) {
             reviews = response.body().string();
         } catch (Exception e) {

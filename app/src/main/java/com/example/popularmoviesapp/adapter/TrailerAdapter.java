@@ -32,7 +32,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
     public void setTrailerList(List<Trailer> trailerList){
         this.trailerList = trailerList;
-        Log.d("setTrailerList", trailerList.toString());
         notifyDataSetChanged();
     }
 

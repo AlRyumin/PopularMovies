@@ -1,6 +1,7 @@
 package com.example.popularmoviesapp;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.View;
@@ -8,12 +9,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.popularmoviesapp.drawable.TextDrawable;
 import com.example.popularmoviesapp.model.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ImageAdapter extends BaseAdapter implements Parcelable {
     private List<Movie> items;
@@ -68,8 +73,11 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
         return imageView;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setData(List<Movie> items) {
         this.items = items;
+//        this.items = Stream.concat(items.stream(), this.items.stream())
+//                .collect(Collectors.toList());
         notifyDataSetChanged();
     }
 
