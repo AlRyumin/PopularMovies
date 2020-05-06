@@ -33,7 +33,7 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
         items = parcel.readArrayList(ImageAdapter.class.getClassLoader());
     }
 
-    public void setItems(ArrayList<Movie> items) {
+    public void setItems(List<Movie> items) {
         this.items = items;
     }
 
@@ -76,8 +76,6 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setData(List<Movie> items) {
         this.items = items;
-//        this.items = Stream.concat(items.stream(), this.items.stream())
-//                .collect(Collectors.toList());
         notifyDataSetChanged();
     }
 

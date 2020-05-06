@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +15,17 @@ import butterknife.BindView;
 public class BaseAppActivity extends AppCompatActivity {
     @BindView(R.id.network_error)
     TextView networkError;
+    @BindView(R.id.network_error_btn)
+    Button networkErrorBtn;
 
     protected void showNetworkError(){
         networkError.setVisibility(View.VISIBLE);
+        networkErrorBtn.setVisibility(View.VISIBLE);
     }
 
     protected void hideNetworkError(){
         networkError.setVisibility(View.GONE);
+        networkErrorBtn.setVisibility(View.GONE);
     }
 
     @Override

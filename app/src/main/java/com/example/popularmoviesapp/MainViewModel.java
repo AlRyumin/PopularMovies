@@ -8,11 +8,13 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.SavedStateHandle;
 
 import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.database.AppDatabase;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.utilities.JsonUtils;
+import com.example.popularmoviesapp.utilities.NetworkUtils;
 
 import org.json.JSONException;
 
@@ -24,16 +26,17 @@ public class MainViewModel extends AndroidViewModel {
     int sortType;
     int page;
     boolean isLastPage;
-
-    public MainViewModel(Application application) {
+    SavedStateHandle savedStateHandle;
+    public MainViewModel(Application application, SavedStateHandle savedStateHandle) {
         super(application);
         movies = new MutableLiveData<>();
         page = 1;
         isLastPage = false;
+        this.savedStateHandle = savedStateHandle;
     }
 
     private void loadMovies() {
-        if (sortType == Constant.SORT_TYPE_FAVORITE_MOVIES) {
+      if (sortType == Constant.SORT_TYPE_FAVORITE_MOVIES) {
             loadMoviesFromDataBase();
         } else {
             loadMoviesFromApi();

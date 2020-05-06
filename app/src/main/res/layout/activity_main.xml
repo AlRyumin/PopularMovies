@@ -11,6 +11,14 @@
         android:text="@string/network_error"
         android:visibility="invisible"/>
 
+    <Button
+        android:id="@+id/network_error_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/network_error_btn"
+        android:visibility="invisible"
+        android:layout_below="@+id/network_error"/>
+
     <GridView
         android:id="@+id/movie_list"
         android:layout_width="fill_parent"

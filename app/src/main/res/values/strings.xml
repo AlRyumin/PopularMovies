@@ -4,6 +4,7 @@
     <string name="user_rating">User rating:</string>
 
     <string name="network_error">No internet connection!</string>
+    <string name="network_error_btn">Back Online</string>
 
     <string name="action_settings">Settings</string>
 

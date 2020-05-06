@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -17,11 +18,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.data.MoviePreferences;
 import com.example.popularmoviesapp.model.Movie;
+import com.example.popularmoviesapp.utilities.NetworkUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseAppActivity {
     ImageAdapter imageAdapter;
@@ -43,6 +47,16 @@ public class MainActivity extends BaseAppActivity {
 
         initView(savedInstanceState);
 
+        if (NetworkUtils.isOnline()) {
+            hideNetworkError();
+            setViewModel();
+        } else {
+            showNetworkError();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setViewModel(){
         viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
         viewModel.setOptions(sortType);
 
@@ -50,7 +64,6 @@ public class MainActivity extends BaseAppActivity {
             setList(movies);
             isLoading = false;
         });
-
     }
 
     @Override
@@ -74,19 +87,19 @@ public class MainActivity extends BaseAppActivity {
 
     public void initView(Bundle savedInstanceState) {
         imageAdapter = new ImageAdapter(this);
+        if(savedInstanceState != null) {
+            ArrayList<Movie> items = savedInstanceState.getParcelableArrayList("imageAdapter");
+            imageAdapter.setItems(items); // Load saved data if any.
+        }
         movieList.setAdapter(imageAdapter);
         final Context context = this;
 
-        movieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Movie movie = (Movie) imageAdapter.getItem(position);
-                Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra(Movie.class.getCanonicalName(), movie);
+        movieList.setOnItemClickListener((parent, v, position, id) -> {
+            Movie movie = (Movie) imageAdapter.getItem(position);
+            Intent intent = new Intent(context, DetailActivity.class);
+            intent.putExtra(Movie.class.getCanonicalName(), movie);
 
-                startActivity(intent);
-            }
+            startActivity(intent);
         });
 
         movieList.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -108,14 +121,28 @@ public class MainActivity extends BaseAppActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle state) {
+        Log.d("MainD", "SAVEINST");
         super.onSaveInstanceState(state);
         state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setList(List<Movie> data) {
+        Log.d("SetLis", "adf");
         if (data != null) {
             imageAdapter.setData(data);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @OnClick(R.id.network_error_btn)
+    public void submit(View view) {
+        if(NetworkUtils.isOnline()){
+            hideNetworkError();
+            setViewModel();
+        } else {
+            Toast toast = Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }
