@@ -91,10 +91,12 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public void setOptions(int sortType) {
-        this.sortType = sortType;
-        page = 1;
-        isLastPage = false;
-        movies.postValue(new ArrayList<>());
+        if(this.sortType != sortType) {
+            this.sortType = sortType;
+            page = 1;
+            isLastPage = false;
+            movies.postValue(new ArrayList<>());
+        }
     }
 
     public void loadMore() {

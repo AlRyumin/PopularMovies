@@ -34,6 +34,7 @@ public class MainActivity extends BaseAppActivity {
     int sortType;
     MainViewModel viewModel;
     boolean isLoading = false;
+    boolean isSaved = false;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -45,11 +46,13 @@ public class MainActivity extends BaseAppActivity {
 
         sortType = MoviePreferences.sortType(this);
 
-        initView(savedInstanceState);
+        initView();
 
         if (NetworkUtils.isOnline()) {
             hideNetworkError();
             setViewModel();
+
+
         } else {
             showNetworkError();
         }
@@ -85,12 +88,10 @@ public class MainActivity extends BaseAppActivity {
         }
     }
 
-    public void initView(Bundle savedInstanceState) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void initView() {
         imageAdapter = new ImageAdapter(this);
-        if(savedInstanceState != null) {
-            ArrayList<Movie> items = savedInstanceState.getParcelableArrayList("imageAdapter");
-            imageAdapter.setItems(items); // Load saved data if any.
-        }
+
         movieList.setAdapter(imageAdapter);
         final Context context = this;
 
@@ -117,13 +118,6 @@ public class MainActivity extends BaseAppActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle state) {
-        Log.d("MainD", "SAVEINST");
-        super.onSaveInstanceState(state);
-        state.putParcelableArrayList("imageAdapter", imageAdapter.getItems());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
