@@ -63,17 +63,6 @@ public class MainActivity extends BaseAppActivity {
         registerReceiver(movieFavoriteStatusReceiver,  intentFilter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setViewModel() {
-        viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
-        viewModel.setOptions(sortType);
-
-        viewModel.getMovies().observe(this, movies -> {
-            setList(movies);
-            isLoading = false;
-        });
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -155,24 +144,21 @@ public class MainActivity extends BaseAppActivity {
     }
 
     public void updateIsFavorite(boolean isFavorite){
-        this.isFavorite = isFavorite;
-        viewModel.dBUpdated();
+        if (this.sortType == Constant.SORT_TYPE_FAVORITE_MOVIES) {
+            this.isFavorite = isFavorite;
+            viewModel.dBUpdated();
+        }
     }
 
-    public class MovieFavoriteStatusReceiver extends BroadcastReceiver {
-        MainActivity mainActivity = null;
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setViewModel() {
+        viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
+        viewModel.setOptions(sortType);
 
-        public MovieFavoriteStatusReceiver(MainActivity main){
-            mainActivity = main;
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean isFavorite = intent.getBooleanExtra(Constant.MOVIE_FAVORITE_KEY, false);
-            if (mainActivity.isFavorite != isFavorite) {
-                mainActivity.updateIsFavorite(isFavorite);
-            }
-        }
+        viewModel.getMovies().observe(this, movies -> {
+            setList(movies);
+            isLoading = false;
+        });
     }
 
     private void checkIsFavorite(Context context, Movie movie){
@@ -186,5 +172,21 @@ public class MainActivity extends BaseAppActivity {
             }
         });
         thread.start();
+    }
+
+    class MovieFavoriteStatusReceiver extends BroadcastReceiver {
+        MainActivity mainActivity = null;
+
+        public MovieFavoriteStatusReceiver(MainActivity main){
+            mainActivity = main;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isFavorite = intent.getBooleanExtra(Constant.MOVIE_FAVORITE_KEY, false);
+            if (mainActivity.isFavorite != isFavorite) {
+                mainActivity.updateIsFavorite(isFavorite);
+            }
+        }
     }
 }
