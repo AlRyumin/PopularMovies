@@ -1,14 +1,14 @@
 package com.example.popularmoviesapp;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -17,10 +17,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.data.MoviePreferences;
+import com.example.popularmoviesapp.database.AppDatabase;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.utilities.NetworkUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +34,9 @@ public class MainActivity extends BaseAppActivity {
     int sortType;
     MainViewModel viewModel;
     boolean isLoading = false;
-    boolean isSaved = false;
+    boolean isFavorite = false;
+
+    private BroadcastReceiver movieFavoriteStatusReceiver;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -51,15 +53,18 @@ public class MainActivity extends BaseAppActivity {
         if (NetworkUtils.isOnline()) {
             hideNetworkError();
             setViewModel();
-
-
         } else {
             showNetworkError();
         }
+
+        movieFavoriteStatusReceiver = new MovieFavoriteStatusReceiver(this);
+
+        IntentFilter intentFilter = new IntentFilter(Constant.MOVIE_FAVORITE_ACTION);
+        registerReceiver(movieFavoriteStatusReceiver,  intentFilter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setViewModel(){
+    private void setViewModel() {
         viewModel = new ViewModelProvider(this, getDefaultViewModelProviderFactory()).get(MainViewModel.class);
         viewModel.setOptions(sortType);
 
@@ -91,6 +96,7 @@ public class MainActivity extends BaseAppActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void initView() {
         imageAdapter = new ImageAdapter(this);
+        isFavorite = false;
 
         movieList.setAdapter(imageAdapter);
         final Context context = this;
@@ -99,6 +105,8 @@ public class MainActivity extends BaseAppActivity {
             Movie movie = (Movie) imageAdapter.getItem(position);
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(Movie.class.getCanonicalName(), movie);
+
+            checkIsFavorite(context, movie);
 
             startActivity(intent);
         });
@@ -131,12 +139,52 @@ public class MainActivity extends BaseAppActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick(R.id.network_error_btn)
     public void submit(View view) {
-        if(NetworkUtils.isOnline()){
+        if (NetworkUtils.isOnline()) {
             hideNetworkError();
             setViewModel();
         } else {
             Toast toast = Toast.makeText(this, R.string.network_error, Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(movieFavoriteStatusReceiver);
+    }
+
+    public void updateIsFavorite(boolean isFavorite){
+        this.isFavorite = isFavorite;
+        viewModel.dBUpdated();
+    }
+
+    public class MovieFavoriteStatusReceiver extends BroadcastReceiver {
+        MainActivity mainActivity = null;
+
+        public MovieFavoriteStatusReceiver(MainActivity main){
+            mainActivity = main;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean isFavorite = intent.getBooleanExtra(Constant.MOVIE_FAVORITE_KEY, false);
+            if (mainActivity.isFavorite != isFavorite) {
+                mainActivity.updateIsFavorite(isFavorite);
+            }
+        }
+    }
+
+    private void checkIsFavorite(Context context, Movie movie){
+        Thread thread = new Thread(() -> {
+            AppDatabase database = AppDatabase.getInstance(context);
+            Movie dBMovie = database.movieDao().get(movie.getId());
+            if (dBMovie != null) {
+                isFavorite = true;
+            } else {
+                isFavorite = false;
+            }
+        });
+        thread.start();
     }
 }

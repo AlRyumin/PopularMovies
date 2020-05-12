@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.popularmoviesapp.adapter.ReviewAdapter;
 import com.example.popularmoviesapp.adapter.TrailerAdapter;
+import com.example.popularmoviesapp.data.Constant;
 import com.example.popularmoviesapp.database.AppDatabase;
 import com.example.popularmoviesapp.model.Movie;
 import com.example.popularmoviesapp.model.Review;
@@ -215,10 +216,19 @@ public class DetailActivity extends BaseAppActivity implements TrailerAdapter.Li
 
     private void saveMovieToFavorite(AppDatabase database) {
         database.movieDao().insertMovie(movie);
+        sendMovieFavoriteStatus(true);
     }
 
     private void removeMovieFromFavorite(AppDatabase database) {
         database.movieDao().delete(movie);
+        sendMovieFavoriteStatus(false);
+    }
+
+    private void sendMovieFavoriteStatus(boolean isFavorite){
+        Intent intent = new Intent(Constant.MOVIE_FAVORITE_ACTION);
+        intent.putExtra(Constant.MOVIE_FAVORITE_KEY, isFavorite);
+//        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        sendBroadcast(intent);
     }
 
     @Override

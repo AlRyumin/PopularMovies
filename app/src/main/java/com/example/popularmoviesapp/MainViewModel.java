@@ -52,7 +52,7 @@ public class MainViewModel extends AndroidViewModel {
                 if (dBMovies.isEmpty()) {
                     movies.postValue(new ArrayList<>());
                 } else {
-                    movies.postValue((ArrayList<Movie>) dBMovies);
+                    movies.postValue(dBMovies);
                 }
                 isLastPage = true;
             }
@@ -103,5 +103,9 @@ public class MainViewModel extends AndroidViewModel {
         if (!isLastPage) {
             loadMovies();
         }
+    }
+
+    public void dBUpdated(){
+        loadMoviesFromDataBase();
     }
 }
