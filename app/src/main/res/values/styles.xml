@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarStyle">@style/ActionBar</item>
     </style>
 
     <style name="MovieItem">
@@ -70,5 +71,38 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/colorDivider</item>
+    </style>
+
+    <style name="ActionBar">
+        <item name="background">@drawable/top_bar_background</item>
+    </style>
+
+    <style name="ActivityMain">
+        <item name="android:background">@color/colorPrimaryLight</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+    </style>
+
+    <style name="MainBannerItem">
+        <item name="android:background">@drawable/main_banner_background</item>
+    </style>
+
+    <style name="MainBannerItemWrapper">
+        <item name="android:background">@drawable/main_banner_border</item>
+    </style>
+
+    <style name="MainBannerGridView">
+        <item name="android:numColumns">auto_fit</item>
+        <item name="android:horizontalSpacing">@dimen/horizontal_grid_spacing</item>
+        <item name="android:verticalSpacing">@dimen/grid_spacing</item>
+        <item name="android:paddingTop">@dimen/grid_padding</item>
+        <item name="android:paddingBottom">@dimen/grid_padding</item>
+        <item name="android:stretchMode">columnWidth</item>
+    </style>
+
+    <style name="MainListTitle">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>

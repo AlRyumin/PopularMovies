@@ -10,7 +10,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 
 public class TextDrawable extends Drawable {
-    private static final int DEFAULT_COLOR = Color.BLACK;
+    private static final int DEFAULT_COLOR = Color.WHITE;
     private static final int DEFAULT_TEXTSIZE = 42;
     private static final int DEFAULT_WIDTH = 185;
     private static final int DEFAULT_HEIGHT = 278;

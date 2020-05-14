@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -17,8 +18,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ImageAdapter extends BaseAdapter implements Parcelable {
     private List<Movie> items;
@@ -58,19 +57,47 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ImageView imageView = new ImageView(mContext);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Movie movie = items.get(i);
 
-        TextDrawable textDrawable = new TextDrawable(movie.getTitle());
 
-        Picasso.get().load(movie.getPoster())
-                .placeholder(textDrawable)
-                .into(imageView);
-        imageView.setAdjustViewBounds(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        LayoutInflater inflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        return imageView;
+        View gridView;
+
+        if (view == null) {
+
+
+            gridView = new View(mContext);
+
+            gridView = inflater.inflate(R.layout.main_banner_item, null);
+
+//            ImageView imageView = new ImageView(mContext);
+            ImageView imageView = (ImageView) gridView
+                    .findViewById(R.id.grid_item_image);
+
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            Movie movie = items.get(i);
+
+
+
+            TextDrawable textDrawable = new TextDrawable(movie.getTitle());
+
+            Picasso.get().load(movie.getPoster())
+                    .placeholder(textDrawable)
+                    .into(imageView);
+            imageView.setAdjustViewBounds(true);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            imageView.setBackground(mContext.getDrawable(R.drawable.main_banner_background));
+            imageView.setClipToOutline(true);
+
+
+        } else {
+            gridView = (View) view;
+        }
+
+
+
+        return gridView;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

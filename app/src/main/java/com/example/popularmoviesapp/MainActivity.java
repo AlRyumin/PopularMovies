@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -31,6 +31,8 @@ public class MainActivity extends BaseAppActivity {
     ImageAdapter imageAdapter;
     @BindView(R.id.movie_list)
     GridView movieList;
+    @BindView(R.id.list_title)
+    TextView listTitle;
     int sortType;
     MainViewModel viewModel;
     boolean isLoading = false;
@@ -74,11 +76,11 @@ public class MainActivity extends BaseAppActivity {
         }
 
         if (sortType == Constant.SORT_TYPE_POPULAR) {
-            getSupportActionBar().setTitle(R.string.most_popular_title);
+            listTitle.setText(getText(R.string.most_popular_title));
         } else if (sortType == Constant.SORT_TYPE_TOP_RATED) {
-            getSupportActionBar().setTitle(R.string.top_rated_title);
+            listTitle.setText(getText(R.string.top_rated_title));
         } else {
-            getSupportActionBar().setTitle(R.string.favorite_title);
+            listTitle.setText(getText(R.string.favorite_title));
         }
     }
 
@@ -119,7 +121,6 @@ public class MainActivity extends BaseAppActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setList(List<Movie> data) {
-        Log.d("SetLis", "adf");
         if (data != null) {
             imageAdapter.setData(data);
         }

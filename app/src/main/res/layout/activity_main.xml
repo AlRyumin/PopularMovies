@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/ActivityMain"
     android:orientation="vertical">
     <TextView
         android:id="@+id/network_error"
@@ -19,13 +20,17 @@
         android:visibility="invisible"
         android:layout_below="@+id/network_error"/>
 
+    <TextView
+        android:id="@+id/list_title"
+        style="@style/MainListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/network_error_btn" />
+
     <GridView
         android:id="@+id/movie_list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:numColumns="auto_fit"
-        android:horizontalSpacing="@dimen/grid_spacing"
-        android:verticalSpacing="@dimen/grid_spacing"
-        android:paddingTop="@dimen/grid_padding"
-        android:stretchMode="columnWidth"/>
+        android:layout_below="@+id/list_title"
+        style="@style/MainBannerGridView" />
 </RelativeLayout>
