@@ -62,39 +62,25 @@ public class ImageAdapter extends BaseAdapter implements Parcelable {
         LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View gridView;
-
-        if (view == null) {
-
-
-            gridView = new View(mContext);
-
-            gridView = inflater.inflate(R.layout.main_banner_item, null);
+        View gridView = inflater.inflate(R.layout.main_banner_item, null);
 
 //            ImageView imageView = new ImageView(mContext);
-            ImageView imageView = (ImageView) gridView
-                    .findViewById(R.id.grid_item_image);
+        ImageView imageView = (ImageView) gridView
+                .findViewById(R.id.grid_item_image);
 
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            Movie movie = items.get(i);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Movie movie = items.get(i);
 
 
+        TextDrawable textDrawable = new TextDrawable(movie.getTitle());
 
-            TextDrawable textDrawable = new TextDrawable(movie.getTitle());
-
-            Picasso.get().load(movie.getPoster())
-                    .placeholder(textDrawable)
-                    .into(imageView);
-            imageView.setAdjustViewBounds(true);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        Picasso.get().load(movie.getPoster())
+                .placeholder(textDrawable)
+                .into(imageView);
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 //            imageView.setBackground(mContext.getDrawable(R.drawable.main_banner_background));
-            imageView.setClipToOutline(true);
-
-
-        } else {
-            gridView = (View) view;
-        }
-
+        imageView.setClipToOutline(true);
 
 
         return gridView;
